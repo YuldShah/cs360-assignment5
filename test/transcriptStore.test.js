@@ -54,4 +54,43 @@ describe("TranscriptStore", () => {
     assert.deepEqual(store.getStudentIDs(), [firstID]);
     assert.throws(() => store.deleteStudent(secondID), /Student not found/);
   });
+
+  test("deleting a student removes their stored grades", () => {
+    const adaID = store.addStudent("Ada");
+    const linID = store.addStudent("Lin");
+    store.addGrade(adaID, "CS360", 85);
+    store.addGrade(linID, "CS360", 70);
+
+    store.deleteStudent(adaID);
+
+    assert.throws(
+      () => store.getGrade(adaID, "CS360"),
+      { message: `Student not found: ${adaID}` },
+    );
+    assert.equal(store.getGrade(linID, "CS360"), 70);
+  });
+
+  test("rejects a second grade for the same student and course", () => {
+    const studentID = store.addStudent("Lin");
+    store.addGrade(studentID, "CS360", 85);
+
+    assert.throws(
+      () => store.addGrade(studentID, "cs360", 40),
+      { message: "Grade already exists for course CS360" },
+    );
+    assert.equal(store.getGrade(studentID, "CS360"), 85);
+    assert.deepEqual(store.changeGrade(studentID, "CS360", 90), {
+      studentID,
+      course: "CS360",
+      grade: 90,
+    });
+  });
+
+  test("name search trims surrounding whitespace and ignores case", () => {
+    const studentID = store.addStudent("Grace Lee");
+
+    assert.equal(store.getTranscript(studentID).student.studentName, "Grace Lee");
+    assert.deepEqual(store.getStudentIDs("  grace lee  "), [studentID]);
+    assert.deepEqual(store.getStudentIDs("GRACE LEE"), [studentID]);
+  });
 });
