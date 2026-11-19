@@ -55,6 +55,21 @@ describe("TranscriptStore", () => {
     assert.throws(() => store.deleteStudent(secondID), /Student not found/);
   });
 
+  test("deleting a student removes their stored grades", () => {
+    const adaID = store.addStudent("Ada");
+    const linID = store.addStudent("Lin");
+    store.addGrade(adaID, "CS360", 85);
+    store.addGrade(linID, "CS360", 70);
+
+    store.deleteStudent(adaID);
+
+    assert.throws(
+      () => store.getGrade(adaID, "CS360"),
+      { message: `Student not found: ${adaID}` },
+    );
+    assert.equal(store.getGrade(linID, "CS360"), 70);
+  });
+
   test("rejects a second grade for the same student and course", () => {
     const studentID = store.addStudent("Lin");
     store.addGrade(studentID, "CS360", 85);
