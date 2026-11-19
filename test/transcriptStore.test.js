@@ -54,4 +54,20 @@ describe("TranscriptStore", () => {
     assert.deepEqual(store.getStudentIDs(), [firstID]);
     assert.throws(() => store.deleteStudent(secondID), /Student not found/);
   });
+
+  test("rejects a second grade for the same student and course", () => {
+    const studentID = store.addStudent("Lin");
+    store.addGrade(studentID, "CS360", 85);
+
+    assert.throws(
+      () => store.addGrade(studentID, "cs360", 40),
+      { message: "Grade already exists for course CS360" },
+    );
+    assert.equal(store.getGrade(studentID, "CS360"), 85);
+    assert.deepEqual(store.changeGrade(studentID, "CS360", 90), {
+      studentID,
+      course: "CS360",
+      grade: 90,
+    });
+  });
 });
