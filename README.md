@@ -34,3 +34,10 @@ Each bug branch was merged into `main` in order (#5, #6, #7), then the refactor.
 ## Result
 
 `npm test` on `main` passes **7/7** (4 starter tests and 3 regression tests).
+
+## Assignment evidence
+
+- **Screenshots:** [01-issues-closed.png](evidence/screenshots/01-issues-closed.png), [02-issue-1.png](evidence/screenshots/02-issue-1.png), [03-issue-2.png](evidence/screenshots/03-issue-2.png), [04-issue-3.png](evidence/screenshots/04-issue-3.png), [05-issue-4.png](evidence/screenshots/05-issue-4.png), [06-branches.png](evidence/screenshots/06-branches.png), [07-commits-main.png](evidence/screenshots/07-commits-main.png), [07b-commits-main.png](evidence/screenshots/07b-commits-main.png), [08-network-graph.png](evidence/screenshots/08-network-graph.png), [09-pulls-closed.png](evidence/screenshots/09-pulls-closed.png), [10-pr-5.png](evidence/screenshots/10-pr-5.png), [11-pr-6.png](evidence/screenshots/11-pr-6.png), [12-pr-7.png](evidence/screenshots/12-pr-7.png), [13-pr-8.png](evidence/screenshots/13-pr-8.png), [14-pr-9.png](evidence/screenshots/14-pr-9.png), [15-conflict-bug-102.png](evidence/screenshots/15-conflict-bug-102.png), [16-conflict-bug-103.png](evidence/screenshots/16-conflict-bug-103.png), [17-conflict-ref-201.png](evidence/screenshots/17-conflict-ref-201.png), [18-npm-test-final.png](evidence/screenshots/18-npm-test-final.png).
+- **Conflict-resolution notes:** [BUG-102.txt](evidence/conflict-resolution/BUG-102.txt), [BUG-103.txt](evidence/conflict-resolution/BUG-103.txt), [REF-201.txt](evidence/conflict-resolution/REF-201.txt), [git-log-graph.txt](evidence/conflict-resolution/git-log-graph.txt).
+- **Final test output:** [npm-test-final-output.txt](evidence/npm-test-final-output.txt).
+- **GitHub username:** [GITHUB_USERNAME.txt](evidence/GITHUB_USERNAME.txt).
