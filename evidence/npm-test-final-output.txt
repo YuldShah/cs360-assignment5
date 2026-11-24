@@ -1,0 +1,28 @@
+$ npm install
+
+up to date, audited 1 package in 410ms
+
+found 0 vulnerabilities
+
+$ npm test
+
+> cs360-assignment5-starter@1.0.0 test
+> node --test
+
+▶ TranscriptStore
+  ✔ adds students and returns their transcripts (2.746322ms)
+  ✔ adds and changes a course grade (0.405654ms)
+  ✔ rejects invalid student, course, and grade inputs (0.506236ms)
+  ✔ supports exact-name lookup and deletion (0.325257ms)
+  ✔ deleting a student removes their stored grades (0.444686ms)
+  ✔ rejects a second grade for the same student and course (0.276499ms)
+  ✔ name search trims surrounding whitespace and ignores case (0.218099ms)
+✔ TranscriptStore (6.159347ms)
+ℹ tests 7
+ℹ suites 1
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 87.452302

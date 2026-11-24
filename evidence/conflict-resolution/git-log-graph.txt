@@ -1,0 +1,37 @@
+*   e90a3f2 Merge pull request #9 from YuldShah/docs/readme
+|\  
+| * 907254c docs: document tickets, fixes and how to run
+|/  
+*   3d248b1 Merge pull request #8 from YuldShah/refactor/ref-201-shared-validation
+|\  
+| *   8b743a7 Merge main into refactor/ref-201-shared-validation, resolve conflict in src/transcriptStore.js
+| |\  
+| |/  
+|/|   
+* |   f25e119 Merge pull request #7 from YuldShah/fix/bug-103-name-search
+|\ \  
+| * \   133bacd Merge main into fix/bug-103-name-search, resolve conflict in test/transcriptStore.test.js
+| |\ \  
+| |/ /  
+|/| |   
+* | |   9ba1ff2 Merge pull request #6 from YuldShah/fix/bug-102-duplicate-grade
+|\ \ \  
+| * \ \   360ad1a Merge main into fix/bug-102-duplicate-grade, resolve conflict in test/transcriptStore.test.js
+| |\ \ \  
+| |/ / /  
+|/| | |   
+* | | |   8001954 Merge pull request #5 from YuldShah/fix/bug-101-delete-removes-grades
+|\ \ \ \  
+| * | | | 72c3e1f fix: remove a student's grades when the student is deleted (fixes #1)
+| * | | | aa7b4c8 test: add failing regression test for BUG-101 (#1)
+|/ / / /  
+| * | | 9331a59 fix: reject a duplicate grade for the same course (fixes #2)
+| * | | 586bd61 test: add failing regression test for BUG-102 (#2)
+|/ / /  
+| * | fbb3bb0 fix: match student names without case or surrounding space (fixes #3)
+| * | 467e99c test: add failing regression test for BUG-103 (#3)
+|/ /  
+| * e027426 refactor: extract shared course and grade validation (#4)
+|/  
+* c51afeb Add starter code for Assignment 5
+* 97bd941 Initial commit

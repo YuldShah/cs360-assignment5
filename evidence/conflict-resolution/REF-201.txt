@@ -1,0 +1,161 @@
+PR: #8 REF-201
+Branch: refactor/ref-201-shared-validation
+Merged: origin/main (f25e119 Merge pull request #7) into refactor/ref-201-shared-validation
+Conflicted file: src/transcriptStore.js
+test/transcriptStore.test.js auto-merged (all three regression tests came from main; this branch did not change tests).
+Auto-merged hunks in src/transcriptStore.js already combined:
+  - getStudentIDs: trim + case-insensitive search from main (BUG-103)
+  - deleteStudent: #grades.delete from main (BUG-101)
+  - addGrade: #parseCourseAndGrade from this branch AND the duplicate-grade throw from main (BUG-102)
+  - changeGrade: #parseCourseAndGrade from this branch
+Manual resolution was only getGrade.
+
+===== CONFLICTED FILE: src/transcriptStore.js =====
+export class TranscriptStore {
+  #students = new Map();
+  #grades = new Map();
+  #nextStudentId = 1;
+
+  addStudent(name) {
+    const studentName = String(name ?? "").trim();
+    if (!studentName) {
+      throw new Error("Student name is required");
+    }
+
+    const studentID = this.#nextStudentId++;
+    this.#students.set(studentID, { studentID, studentName });
+    return studentID;
+  }
+
+  getStudentIDs(name) {
+    const matches = [];
+    const query = name === undefined ? undefined : String(name).trim().toLowerCase();
+    for (const student of this.#students.values()) {
+      if (query === undefined || student.studentName.toLowerCase() === query) {
+        matches.push(student.studentID);
+      }
+    }
+    return matches;
+  }
+
+  getTranscript(studentID) {
+    const student = this.#requireStudent(studentID);
+    return {
+      student,
+      grades: this.#listGrades(studentID),
+    };
+  }
+
+  deleteStudent(studentID) {
+    const parsedID = this.#parseStudentID(studentID);
+    if (!this.#students.delete(parsedID)) {
+      throw new Error(`Student not found: ${parsedID}`);
+    }
+    this.#grades.delete(parsedID);
+  }
+
+  addGrade(studentID, course, grade) {
+    const parsedID = this.#requireStudent(studentID).studentID;
+    const { course: normalizedCourse, grade: numericGrade } = this.#parseCourseAndGrade(
+      course,
+      grade,
+    );
+
+    const studentGrades = this.#grades.get(parsedID) ?? new Map();
+    if (studentGrades.has(normalizedCourse)) {
+      throw new Error(`Grade already exists for course ${normalizedCourse}`);
+    }
+    studentGrades.set(normalizedCourse, numericGrade);
+    this.#grades.set(parsedID, studentGrades);
+    return { studentID: parsedID, course: normalizedCourse, grade: numericGrade };
+  }
+
+  changeGrade(studentID, course, grade) {
+    const parsedID = this.#requireStudent(studentID).studentID;
+    const { course: normalizedCourse, grade: numericGrade } = this.#parseCourseAndGrade(
+      course,
+      grade,
+    );
+
+    const studentGrades = this.#grades.get(parsedID);
+    if (!studentGrades?.has(normalizedCourse)) {
+      throw new Error(`Grade not found for course ${normalizedCourse}`);
+    }
+    studentGrades.set(normalizedCourse, numericGrade);
+    return { studentID: parsedID, course: normalizedCourse, grade: numericGrade };
+  }
+
+  getGrade(studentID, course) {
+<<<<<<< HEAD
+    const parsedID = this.#parseStudentID(studentID);
+    const { course: normalizedCourse } = this.#parseCourseAndGrade(course, undefined, {
+      normalizeOnly: true,
+    });
+=======
+    const parsedID = this.#requireStudent(studentID).studentID;
+    const normalizedCourse = String(course ?? "").trim().toUpperCase();
+>>>>>>> origin/main
+    return this.#grades.get(parsedID)?.get(normalizedCourse);
+  }
+
+  #parseCourseAndGrade(course, grade, { normalizeOnly = false } = {}) {
+    const normalizedCourse = String(course ?? "").trim().toUpperCase();
+    if (normalizeOnly) {
+      return { course: normalizedCourse };
+    }
+    if (!normalizedCourse) {
+      throw new Error("Course name is required");
+    }
+
+    const numericGrade = Number(grade);
+    if (!Number.isInteger(numericGrade) || numericGrade < 0 || numericGrade > 100) {
+      throw new Error("Grade must be an integer from 0 to 100");
+    }
+    return { course: normalizedCourse, grade: numericGrade };
+  }
+
+  #listGrades(studentID) {
+    const parsedID = this.#parseStudentID(studentID);
+    return [...(this.#grades.get(parsedID)?.entries() ?? [])].map(
+      ([course, grade]) => ({ studentID: parsedID, course, grade }),
+    );
+  }
+
+  #parseStudentID(studentID) {
+    const parsedID = Number(studentID);
+    if (!Number.isInteger(parsedID) || parsedID <= 0) {
+      throw new Error("Student ID must be a positive integer");
+    }
+    return parsedID;
+  }
+
+  #requireStudent(studentID) {
+    const parsedID = this.#parseStudentID(studentID);
+    const student = this.#students.get(parsedID);
+    if (!student) {
+      throw new Error(`Student not found: ${parsedID}`);
+    }
+    return student;
+  }
+}
+
+===== RESOLUTION DIFF (conflicted -> resolved) =====
+--- /tmp/conflict-snapshots/REF-201-transcriptStore.js	2026-11-19 12:49:23.719458296 +0000
++++ /workspace/src/transcriptStore.js	2026-11-19 12:49:27.271446803 +0000
+@@ -73,15 +73,10 @@
+   }
+ 
+   getGrade(studentID, course) {
+-<<<<<<< HEAD
+-    const parsedID = this.#parseStudentID(studentID);
++    const parsedID = this.#requireStudent(studentID).studentID;
+     const { course: normalizedCourse } = this.#parseCourseAndGrade(course, undefined, {
+       normalizeOnly: true,
+     });
+-=======
+-    const parsedID = this.#requireStudent(studentID).studentID;
+-    const normalizedCourse = String(course ?? "").trim().toUpperCase();
+->>>>>>> origin/main
+     return this.#grades.get(parsedID)?.get(normalizedCourse);
+   }
+ 
